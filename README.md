@@ -55,4 +55,39 @@ switchport access vlan <VLAN-NUMBER>
 switchport mode access
 ```
 
+## Router ACL Configuration
+The router have to block things that are going out of him to a vlan that is seperated from another, for example vlan 10
+shouldn't be able to communicate with vlan 20 to do so we have to make our router trunk aware (this my own term to approach it )
+to do so we have to write the following command lines :
+
+```
+interface FastEthernet0/0.10 // create a sub interface 0.20 for vlan 20 (you know the deal) 
+encapsulation dot1Q 10 // maake the router aware of vlan 10
+ip address 192.168.10.254 255.255.255.0 // give the gateaway
+```
+
+### ACLs
+ACls are rules that you can set on the router to simulate a firewall those rule can be standard from 1-99 (for ip) 
+or extended 100-199 (for ip).
+
+standard access will apply rules by looking at the source address (pretty weak if you ask me).
+extended access will apply rules by looking at the source address destination address and various other sources
+(stronger but good luck handling them)
+
+We are going to  start with the standard one go back to router if you closed the window
+```
+interface FastEthernet0/0.10 // enter the sub-interface you just created 
+ip access-group 2 out // we didn't create the rule 2 that will be added to the access list but this is means 
+// that whatever rule is there is in the access list that got 1 will applied on the out of the interface 
+// means when the trafic is going out 
+```
+repeat the following in the 0.20 interface too.
+
+Now it's time to add the rules 
+```
+access-list 1 deny 192.168.10.0 0.0.0.255 // deny whatever trafic coming from 192.168.10.0 on sub-interface 0.20 
+access-list 2 deny 192.168.20.0 0.0.0.255 // deny whatever trafic comming from 192.168.20.0 on sub-interface 0.10
+```
+
+and we are done next time we are going to see the same thing but with extended ones check the git branch extended
 
