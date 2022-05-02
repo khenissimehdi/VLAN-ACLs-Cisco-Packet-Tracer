@@ -1,3 +1,6 @@
+If you are here means that you read the standard version for this is one everything is the same but the acl part
+enjoy
+
 # 1. Introduction
 In this repo I will be creating a VLAN network using Cisco Packet tracer in this and will show and explain
 the steps one by one.
@@ -77,17 +80,15 @@ extended access will apply rules by looking at the source address destination ad
 We are going to  start with the standard one go back to router if you closed the window
 ```
 interface FastEthernet0/0.10 // enter the sub-interface you just created 
-ip access-group 2 out // we didn't create the rule 2 that will be added to the access list but this is means 
-// that whatever rule is there is in the access list that got 1 will applied on the out of the interface 
+ip access-group 104 out // we didn't create the rule 104 that will be added to the access list but this is means   (101 for the other intefaace)
+// that whatever rule is there is in the access list that got 104 will applied on the out of the interface 
 // means when the trafic is going out 
 ```
 repeat the following in the 0.20 interface too.
 
-Now it's time to add the rules 
+Now it's time to add the rules
 ```
-access-list 1 deny 192.168.10.0 0.0.0.255 // deny whatever trafic coming from 192.168.10.0 on sub-interface 0.20 
-access-list 2 deny 192.168.20.0 0.0.0.255 // deny whatever trafic comming from 192.168.20.0 on sub-interface 0.10
+access-list 101 permit ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255
+access-list 104 permit ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
 ```
-
-and we are done next time we are going to see the same thing but with extended ones check the git branch extended
-
+`
